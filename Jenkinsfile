@@ -1,12 +1,10 @@
 pipeline {
-    agent any
+    agent any  // Use any available agent
 
     tools {
-        maven 'Maven'
+        maven 'Maven'  // Ensure this matches the name configured in Jenkins
     }
-
     stages {
-
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/shravan-hegde/MyMavenGuavaApp.git'
@@ -15,20 +13,35 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package'  // Run Maven build
             }
         }
 
-        stage('Verify JAR') {
+        stage('Test') {
             steps {
-                sh 'ls target/'
+                sh 'mvn test'  // Run unit tests
             }
         }
 
-        stage('Run') {
+        
+        
+       
+        stage('Run Application') {
             steps {
-                sh 'java -jar target/*.jar'
+                // Start the JAR application
+                sh '   mvn exec:java -Dexec.mainClass="com.example.App"   '
             }
+        }
+
+        
+    }
+
+    post {
+        success {
+            echo 'Build and deployment successful!'
+        }
+        failure {
+            echo 'Build failed!'
         }
     }
 }
