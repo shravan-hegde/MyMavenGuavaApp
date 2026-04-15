@@ -9,7 +9,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/shravan-hegde/MyMavenGuavaApp.git'
+                git branch: 'master', url: 'https://github.com/shravan-hegde/MyMavenGuavaApp.git'
             }
         }
 
